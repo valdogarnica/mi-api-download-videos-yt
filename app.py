@@ -36,7 +36,8 @@ def get_video_info():
     if not url:
         return jsonify({"error": "Falta la URL"}), 400
 
-    ydl_opts = {"quiet": True}
+    ydl_opts = {"quiet": True,
+                "cookies-from-browser": True}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         formats = [
@@ -58,6 +59,7 @@ def download_video():
     ydl_opts = {
         "format": format_id,
         "outtmpl": f"{DOWNLOAD_FOLDER}/%(id)s.%(ext)s",
+        "cookies-from-browser": True,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -91,6 +93,7 @@ def download_audio():
         "format": format_id,
         "outtmpl": f"{DOWNLOAD_MUSICA}/%(id)s.%(ext)s",
         "progress_hooks": [progress_hook],
+        "cookies-from-browser": True,
     }
 
     try:
